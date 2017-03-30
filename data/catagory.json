@@ -1,0 +1,23 @@
+{
+	"categories": [
+		{
+			"id": "0013738748415562fee26e070fa4664ad926c8e30146c67000",
+			"name": "编程",
+			"tag": "tech",
+			"description": "",
+			"display_order": 0,
+			"created_at": 1373874841556,
+			"updated_at": 1429763779958,
+			"version": 5
+		}, {
+			"id": "0013738748248885ddf38d8cd1b4803aa74bcda32f853fd000",
+			"name": "读书",
+			"tag": "other",
+			"description": "",
+			"display_order": 1,
+			"created_at": 1373874824888,
+			"updated_at": 1429763779974,
+			"version": 5
+		}
+	]
+}

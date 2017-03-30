@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>同时执行两个异步任务</title>
+		<script type="text/javascript">
+			window.onload = function() {
+				var btn = document.getElementById("btn");
+				var b = document.getElementById("b");
+				var log = document.getElementById("log");
+				//创建两个Promise
+				var p1 = new Promise(function(resolve,reject) {
+					setTimeout(resolve,500,"异步任务一");
+				});
+				
+				var p2 = new Promise(function(resolve,reject) {
+					setTimeout(resolve,1000,'异步任务二');
+				});
+				var pr = new Promise(function(resolve,reject) {
+					setTimeout(resolve,2000,'3');
+				});
+				//清除日志
+				function clearLog(){
+					while(log.children.length > 0){
+						log.removeChild(log.children[log.children.length-1]);
+					}
+				}
+				//点击按钮同时执行两个异步任务
+				btn.onclick = function() {
+					clearLog();
+					//利用all函数来同时执行两个异步任务
+					Promise.all([pr,p2,p1])
+					//两个任务执行完成后执行then函数
+					.then(function(result) {
+						for(var i = 0;i < result.length;i++){
+							var p = document.createElement('p');
+							p.innerHTML = result[i];
+							log.appendChild(p);
+						}
+					});
+				}
+				
+				//点击获取先返回的值
+				b.onclick = function() {
+					clearLog();
+					//利用race方法来同时执行两个异步任务取最先执行完成的结果
+					Promise.race([pr,p2])
+					//完成后执行then方法
+					.then(function(result) {
+						var p = document.createElement('p');
+						p.innerHTML = result;
+						log.appendChild(p);
+					});
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+			<button id="btn">执行结果</button>
+			<button id="b">获取先返回的值</button>
+		</div>
+		<div>
+			<p>结果显示 ：</p>
+		</div>
+		<div id="log"></div>
+	</body>
+</html>

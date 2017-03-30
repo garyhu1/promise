@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Promise练习</title>
+		<script type="text/javascript">
+			window.onload = function() {
+				var btn = document.getElementById("btn");
+				var log = document.getElementById("log");
+				//清除所有日志
+				function clearLog(){
+					while(log.children.length-1 > 0){
+						console.log('开始清除');
+						log.removeChild(log.children[log.children.length-1]);
+					}
+				}
+				//添加 日志
+				function addLog(text){
+					var p = document.createElement('p');
+					p.innerHTML = text;
+					log.appendChild(p);
+				}
+				//加法运算，延时0.5秒
+				function add(input){
+					return new Promise(function (resolve,reject){
+						addLog('Done add : '+input+'+'+input+'...');
+						setTimeout(resolve,500,input+input);
+					});
+				}
+				//乘法运算，延时0.5秒
+				function multipy(input){
+					return new Promise(function (resolve,reject){
+						addLog('Done multipy : '+input+'*'+input+'...');
+						setTimeout(resolve,500,input*input);
+					});
+				}
+				var p = new Promise(function(resolve,reject) {
+						addLog('Startting calculate ...');
+						resolve(253);
+					});
+				//点击按钮开始打印日志
+				btn.onclick = function(){
+					clearLog();
+					p.then(multipy)
+					.then(add)
+					.then(multipy)
+					.then(add)
+					.then(function(result) {
+						addLog("Done result :"+result);
+					});
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+			<button id="btn">打印日志</button>
+		</div>
+		<div>
+			<p>日志内容：</p>
+		</div>
+		<div id="log"></div>
+	</body>
+</html>

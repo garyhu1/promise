@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>模拟异步网络请求</title>
+		<script type="text/javascript">
+			window.onload = function() {
+				var btn = document.getElementById("btn");
+				var log = document.getElementById("log");
+				//ajax函数将返回Promise对象:
+				function ajax(method,url,data){
+					var request ;
+					if(window.XMLHttpRequest){
+						request = new XMLHttpRequest();
+					}else{
+						request = new ActiveXObject('Microsoft.XMLHTTP');
+					}
+					return new Promise(function(resolve,reject) {
+						request.onreadystatechange = function() {
+							if(request.readyState === 4){//请求完成
+								if(request.status === 200){//请求成功
+									resolve(request.responseText);
+								}else{//请求失败
+									reject(request.status);
+								}
+							}else{//正在请求
+								
+							}
+						}
+						request.open(method,url);
+						request.send(data);
+					});
+				}
+				//点击按钮
+				btn.onclick = function() {
+					var p = ajax('GET','../data/catagory.json');
+					p.then(function(text) {
+						log.innerHTML = text;
+					}).catch(function(code) {
+						log.innerHTML = 'Error Code : '+code;
+					});
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+			<button id="btn">异步请求</button>
+		</div>
+		<div>
+			<p>请求结果：</p>
+		</div>
+		<div id="result">
+			<p id="log"></p>
+		</div>
+	</body>
+</html>
